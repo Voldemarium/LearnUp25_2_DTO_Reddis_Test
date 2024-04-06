@@ -1,9 +1,6 @@
 package ru.learnUP.springboottest.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
@@ -19,6 +16,7 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @ToString
+@EqualsAndHashCode
 //в запросе SQL вместо * (select *) можно указывать имена столбцов таблицы
 //@NamedQuery(name = "Post", query = "select p from Post p inner join p.comments where p.id = :id")
 //@RedisHash
@@ -41,6 +39,12 @@ public class Post implements Serializable {
     @Fetch(FetchMode.JOIN)
     private List<Comment> comments;
 
+    public Post(Long id, String title, String text) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+    }
+
 //    @Override
 //    public String toString() {
 //        return "Post{" +
@@ -50,4 +54,5 @@ public class Post implements Serializable {
 //                ", comments=" + comments +
 //                '}';
 //    }
+
 }

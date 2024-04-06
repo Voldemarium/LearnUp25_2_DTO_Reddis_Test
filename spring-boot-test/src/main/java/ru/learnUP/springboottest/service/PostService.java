@@ -26,7 +26,7 @@ public class PostService {
 
     //    Получение списка всех постов
     public List<Post> getPosts() {
-           return repository.findAll();
+        return repository.findAll();
     }
 
     public List<DtoClassCountComments> getCountCommentsByPost() {
@@ -40,9 +40,9 @@ public class PostService {
 
     //Кеширование обьекта Post (кеш записывается в установленную программу Redis
     //дальнейшие запросы к этому посту идут через кеш (если он там есть, если нет, то идет запрос в базу данных)
-        @Cacheable(value = "post")
+    @Cacheable(value = "post")
     public Post getPostById(Long id) {
-        return repository.findId1(id) ;
+        return repository.findId1(id);
     }
 
 }

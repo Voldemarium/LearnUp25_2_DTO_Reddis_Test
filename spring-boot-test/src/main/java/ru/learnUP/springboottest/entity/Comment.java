@@ -1,9 +1,6 @@
 package ru.learnUP.springboottest.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -11,11 +8,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-//@Table(name = "comment")
 @Getter
 @Setter
-@ToString(exclude = {"post"})
 @RequiredArgsConstructor
+@ToString(exclude = {"post"})
+@EqualsAndHashCode(exclude = {"post"})
 //@RedisHash
 public class Comment implements Serializable {
 
@@ -31,7 +28,13 @@ public class Comment implements Serializable {
     @Fetch(FetchMode.JOIN) //JOIN - чтобы все комментарии присоединились  одному посту
     private Post post;
 
-//    @Override
+    public Comment(Long id, String text, Post post) {
+        this.id = id;
+        this.text = text;
+        this.post = post;
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "Comment{" +
 //                "id=" + id +
