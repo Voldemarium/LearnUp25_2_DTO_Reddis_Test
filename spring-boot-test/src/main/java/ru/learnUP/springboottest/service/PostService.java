@@ -3,8 +3,9 @@ package ru.learnUP.springboottest.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import ru.learnUP.springboottest.dto.DtoClassCountComments;
-import ru.learnUP.springboottest.dto.DtoInterfaceCountComments;
+import ru.learnUP.springboottest.dto.DtoClassCountCommentsJPQL;
+import ru.learnUP.springboottest.dto.DtoClassCountCommentsSQL;
+import ru.learnUP.springboottest.dto.DtoInterfaceCountCommentsSQL;
 import ru.learnUP.springboottest.entity.Post;
 import ru.learnUP.springboottest.repository.PostRepository;
 
@@ -29,11 +30,15 @@ public class PostService {
         return repository.findAll();
     }
 
-    public List<DtoClassCountComments> getCountCommentsByPost() {
+    public List<DtoClassCountCommentsJPQL> getCountCommentsByPostJPQL() {
+        return repository.getCommentsCountByPostsJPQL();
+    }
+
+    public List<DtoClassCountCommentsSQL> getCountCommentsByPostSQL() {
         ModelMapper modelMapper = new ModelMapper(); //объект ModelMapper для конвертации
-        List<DtoInterfaceCountComments> list1 = repository.getCommentsCountByPosts();
-        List<DtoClassCountComments> list = list1.stream()
-                .map(postDtoCountComments -> modelMapper.map(postDtoCountComments, DtoClassCountComments.class))
+        List<DtoInterfaceCountCommentsSQL> list1 = repository.getCommentsCountByPostsSQL();
+        List<DtoClassCountCommentsSQL> list = list1.stream()
+                .map(postDtoCountComments -> modelMapper.map(postDtoCountComments, DtoClassCountCommentsSQL.class))
                 .collect(Collectors.toList());
         return list;
     }

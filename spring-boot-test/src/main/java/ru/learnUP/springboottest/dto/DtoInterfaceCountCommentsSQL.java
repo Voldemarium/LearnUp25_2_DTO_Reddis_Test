@@ -1,6 +1,6 @@
 package ru.learnUP.springboottest.dto;
 
-public interface DtoInterfaceCountComments {
+public interface DtoInterfaceCountCommentsSQL {
     Long getPost_id();
     Long getCount();
 }

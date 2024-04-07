@@ -3,7 +3,8 @@ package ru.learnUP.springboottest.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.learnUP.springboottest.dto.DtoInterfaceCountComments;
+import ru.learnUP.springboottest.dto.DtoClassCountCommentsJPQL;
+import ru.learnUP.springboottest.dto.DtoInterfaceCountCommentsSQL;
 import ru.learnUP.springboottest.entity.Post;
 
 import java.util.List;
@@ -32,15 +33,24 @@ public interface PostRepository extends JpaRepository <Post, Long> {
                nativeQuery = true)
        List<Post> findByIdWithComments();
 
-    //Нативный SQL запрос (Количество постов с комментариями)
+    //Нативный SQL запрос (Количество комментариев у поста с параметром id)
        @Query(value = "SELECT count(*)\n" +
                "FROM post p\n" +
                "LEFT JOIN comment c ON p.id = c.post_id\n" +
-               "WHERE p.id = ?1\n" +
+               "WHERE p.id = :id\n" +     // добавление к предыдущему запросу
                "  AND c.id IS NOT NULL",
                nativeQuery = true
        )
-       Long getCommentsCountById(long id);
+       Long getCommentsCountByIdSQL(long id);
+
+    //JPQL запрос (Количество комментариев у поста с параметром id)
+    @Query(value = "SELECT count(*)\n" +
+            "FROM Post p\n" +
+            "LEFT JOIN Comment c ON p = c.post\n" +  //или  "LEFT JOIN Comment c ON p.id = c.post.id" +
+            "WHERE p.id = :id\n" +
+            "  AND c.id IS NOT NULL"
+    )
+    Long getCommentsCountByIdJPQL(long id);
 
     //Нативный SQL запрос (Количество комментариев в каждом посте)
     @Query(value =
@@ -50,7 +60,15 @@ public interface PostRepository extends JpaRepository <Post, Long> {
             "ORDER by post_id",
             nativeQuery = true
     )
-    List<DtoInterfaceCountComments> getCommentsCountByPosts();
+    List<DtoInterfaceCountCommentsSQL> getCommentsCountByPostsSQL();
+
+    //JPQL запрос (Количество комментариев в каждом посте)
+    @Query(value =
+            "SELECT new ru.learnUP.springboottest.dto.DtoClassCountCommentsJPQL(c.post, COUNT(c))\n" +
+                    "from Comment c\n" +
+                    "GROUP by c.post\n" +
+                    "ORDER by c.post")
+    List<DtoClassCountCommentsJPQL> getCommentsCountByPostsJPQL();
 
     //JPQL(HQL) запрос
        @Query(value = "FROM Post p\n" +

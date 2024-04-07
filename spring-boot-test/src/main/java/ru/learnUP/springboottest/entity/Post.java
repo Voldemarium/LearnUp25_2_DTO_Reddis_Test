@@ -16,13 +16,13 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"comments"})
 //в запросе SQL вместо * (select *) можно указывать имена столбцов таблицы
 //@NamedQuery(name = "Post", query = "select p from Post p inner join p.comments where p.id = :id")
 //@RedisHash
 public class Post implements Serializable {
     @Id
-    @GeneratedValue //(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -31,9 +31,9 @@ public class Post implements Serializable {
     @Column
     private String text;
 
-//    FetchType.EAGER - значит комментарии всегда подтягиваются из базы данных при вызове
-//    CascadeType.ALL - значит все комментарии после удаления поста Post удаляются из базы данных
-//@OnDelete(action = OnDeleteAction.CASCADE) тоже значит все комментарии после удаления поста Post удаляются из базы данных
+    //в запросе SQL вместо * (select *) можно указывать имена столбцов таблицы
+   //@NamedQuery(name = "Post", query = "select p from Post p inner join p.comments where p.id = :id")
+   //@RedisHash
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.JOIN)

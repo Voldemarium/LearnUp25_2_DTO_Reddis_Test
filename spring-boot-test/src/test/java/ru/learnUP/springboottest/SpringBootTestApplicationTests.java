@@ -1,5 +1,6 @@
 package ru.learnUP.springboottest;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Assertions;
-import ru.learnUP.springboottest.dto.DtoClassCountComments;
+import ru.learnUP.springboottest.dto.DtoClassCountCommentsJPQL;
+import ru.learnUP.springboottest.dto.DtoClassCountCommentsSQL;
 import ru.learnUP.springboottest.entity.Comment;
 import ru.learnUP.springboottest.entity.Post;
 import ru.learnUP.springboottest.repository.PostRepository;
@@ -27,6 +29,7 @@ import java.util.List;
 @ContextConfiguration(initializers = {SpringBootTestApplicationTests.Initializer.class})
 @Testcontainers
 class SpringBootTestApplicationTests {
+    Post post1 = new Post(1L, "text1", "title1");
 
     @Autowired
     PostRepository postRepository;
@@ -56,7 +59,7 @@ class SpringBootTestApplicationTests {
     public void getPosts() {
         List<Post> postsActual = postRepository.findAll();
 
-        Post post1 = new Post(1L, "text1", "title1");
+//        Post post1 = new Post(1L, "text1", "title1");
         Comment comment = new Comment(1L, "comment1", post1);
         post1.setComments(List.of(comment));
         List<Post> postsExpected = List.of(post1);
@@ -66,10 +69,35 @@ class SpringBootTestApplicationTests {
 
     @Test
     @Transactional
-    public void getCountCommentsByPost() {
-        List<DtoClassCountComments> listActual = postService.getCountCommentsByPost();
-        DtoClassCountComments dtoClassCountComments = new DtoClassCountComments(1L, 1L);
-        List<DtoClassCountComments> listExpected = List.of(dtoClassCountComments);
+    @DisplayName("Test getCommentsCountByIdSQL")
+    public void getCommentsCountByIdSQL() {
+        Assertions.assertEquals(postRepository.getCommentsCountByIdSQL(1L), 1L);
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Test getCommentsCountByIdJPQL")
+    public void getCommentsCountByIdJPQL() {
+        Assertions.assertEquals(postRepository.getCommentsCountByIdJPQL(1L), 1L);
+    }
+
+
+    @Test
+    @Transactional
+    public void getCountCommentsByPostSQL() {
+        List<DtoClassCountCommentsSQL> listActual = postService.getCountCommentsByPostSQL();
+        DtoClassCountCommentsSQL dtoClassCountCommentsSQL = new DtoClassCountCommentsSQL(1L, 1L);
+        List<DtoClassCountCommentsSQL> listExpected = List.of(dtoClassCountCommentsSQL);
+        Assertions.assertEquals(listExpected, listActual);
+    }
+
+    @Test
+    @Transactional
+    public void getCountCommentsByPostJPQL() {
+        List<DtoClassCountCommentsJPQL> listActual = postService.getCountCommentsByPostJPQL();
+//        Post post1 = new Post(1L, "text1", "title1");
+        DtoClassCountCommentsJPQL dtoClassCountComments = new DtoClassCountCommentsJPQL(post1, 1L);
+        List<DtoClassCountCommentsJPQL> listExpected = List.of(dtoClassCountComments);
         Assertions.assertEquals(listExpected, listActual);
     }
 }

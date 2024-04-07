@@ -39,9 +39,11 @@ public class SpringBootTestApplication {
 
 		log.info("Search result 2: {}", postRepository.findByIdWithComments());
 
-		log.info("Post 1 have {} comments", postRepository.getCommentsCountById(1));
+		log.info("SQL: Post 2 have {} comments", postRepository.getCommentsCountByIdSQL(2));
+		log.info("JPQL: Post 2 have {} comments", postRepository.getCommentsCountByIdJPQL(2));
 
-		log.info("count comment by posts {}", postService.getCountCommentsByPost());
+		log.info("JPQL: count comment by posts {}", postService.getCountCommentsByPostJPQL());
+		log.info("SQL: count comment by posts {}", postService.getCountCommentsByPostSQL());
 
 //		log.info("Post id = 1: {}", postRepository.findId1(1L));
 
