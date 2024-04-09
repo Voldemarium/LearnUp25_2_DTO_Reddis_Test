@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.learnUP.springboottest.entity.Post;
 import ru.learnUP.springboottest.service.CommentService;
@@ -11,7 +12,7 @@ import ru.learnUP.springboottest.service.PostService;
 import ru.learnUP.springboottest.repository.PostRepository;
 
 @SpringBootApplication
-//@EnableCaching
+@EnableCaching
 //@EnableRedisRepositories
 public class SpringBootTestApplication {
 
@@ -39,7 +40,7 @@ public class SpringBootTestApplication {
 
 		log.info("Search result 2: {}", postRepository.findByIdWithComments());
 
-		log.info("SQL: Post 2 have {} comments", postRepository.getCommentsCountByIdSQL(2));
+		log.info("SQL: Post 1 have {} comments", postRepository.getCommentsCountByIdSQL(1));
 		log.info("JPQL: Post 2 have {} comments", postRepository.getCommentsCountByIdJPQL(2));
 
 		log.info("JPQL: count comment by posts {}", postService.getCountCommentsByPostJPQL());

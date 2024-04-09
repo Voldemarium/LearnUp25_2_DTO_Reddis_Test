@@ -25,7 +25,7 @@ public class Comment implements Serializable {
 
     @ManyToOne
     @JoinColumn
-    @Fetch(FetchMode.JOIN) //JOIN - чтобы все комментарии присоединились  одному посту
+//    @Fetch(FetchMode.JOIN) //JOIN - чтобы все комментарии присоединились  одному посту
     private Post post;
 
     public Comment(Long id, String text, Post post) {

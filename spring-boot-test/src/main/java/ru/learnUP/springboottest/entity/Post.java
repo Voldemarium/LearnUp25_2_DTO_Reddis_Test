@@ -36,7 +36,7 @@ public class Post implements Serializable {
    //@RedisHash
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @Fetch(FetchMode.JOIN)
+//    @Fetch(FetchMode.JOIN)
     private List<Comment> comments;
 
     public Post(Long id, String title, String text) {

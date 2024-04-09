@@ -56,6 +56,7 @@ class SpringBootTestApplicationTests {
 
     @Test
     @Transactional
+    @DisplayName("Test getPosts")
     public void getPosts() {
         List<Post> postsActual = postRepository.findAll();
 
@@ -81,7 +82,7 @@ class SpringBootTestApplicationTests {
         Assertions.assertEquals(postRepository.getCommentsCountByIdJPQL(1L), 1L);
     }
 
-
+    @DisplayName("Test getCountCommentsByPostSQL")
     @Test
     @Transactional
     public void getCountCommentsByPostSQL() {
@@ -93,6 +94,7 @@ class SpringBootTestApplicationTests {
 
     @Test
     @Transactional
+    @DisplayName("getCountCommentsByPostJPQL")
     public void getCountCommentsByPostJPQL() {
         List<DtoClassCountCommentsJPQL> listActual = postService.getCountCommentsByPostJPQL();
 //        Post post1 = new Post(1L, "text1", "title1");
